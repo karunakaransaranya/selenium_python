@@ -11,35 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4        # ✅ updated from v3
 
-      # Step 2: Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5   # ✅ updated from v4
         with:
           python-version: '3.11'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Step 4: Install Chrome browser
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
 
-      # Step 5: Run Selenium tests
       - name: Run Tests
         run: |
-          pytest SampleFramework/test/test_e2etest.py -v -s \
-            --html=SampleFramework/reports/report.html \
+          pytest test/test_e2etest.py -v -s \
+            --html=reports/report.html \
             --self-contained-html
 
-      # Step 6: Upload HTML report as artifact
       - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        if: always()   # upload even if tests fail
+        uses: actions/upload-artifact@v4  # ✅ updated from v3
+        if: always()
         with:
           name: test-report
-          path: SampleFramework/reports/report.html
+          path: reports/report.html
