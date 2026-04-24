@@ -16,9 +16,15 @@ def browser_detail(request):
     global driver
     browser = request.config.getoption("browser_name")
     if browser == "chrome":
-        driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_argument("--headless")  # ✅ no UI needed in CI
+        options.add_argument("--no-sandbox")  # ✅ required in Linux CI
+        options.add_argument("--disable-dev-shm-usage")  # ✅ prevents memory issues
+        driver = webdriver.Chrome(options=options)
     elif browser == "firefox":
-        driver = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--headless")
+        driver = webdriver.Firefox(options=options)
     yield driver
     driver.quit()
 
